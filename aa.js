@@ -1,39 +1,62 @@
-{
-  "list": [
-      {
-          "peoples": "[]",
-          "preplaninfoid": 19,
-          "orgid": "",
-          "starttime": "2023-11-05",
-          "eventtypesecond": "设备事故",
-          "authorizepeople": "席雨伟",
-          "attachmenturl": "502B2652177F3FCBF960973491FFB3C1",
-          "reportunitcode": "",
-          "zjlid": "17de26470a771817b42124faee3df9d1",
-          "tenantid": "1414896210194907137",
-          "extparams": null,
-          "eventtypefirst": "生产安全事故",
-          "name": "生产安全事故综合应急预案_断电",
-          "number": "ENN8126/HSE001C-2023",
-          "authorizeunitcode": "",
-          "releasetime": "2023-11-01",
-          "type": "综合应急预案",
-          "xxrksj": "2023-12-15 10:55:07",
-          "authorizeunitname": "",
-          "authorizeexplanation": "处理流程参照的是《 35kVI 段和Ⅱ段母线同时失电，启动柴油发电机》",
-          "status": 0,
-          "releaseunitname": "舟山基础设施运营智能群",
-          "remark": "",
-          "bz": "1702608900048",
-          "endtime": "2023-11-30",
-          "version": "2023版",
-          "releaseunitcode": "1414896210194907137",
-          "createusername": "席雨伟",
-          "onlinepreplanurl": "D97B931CC92A6D3C5684F96F04066EF8230F6BFB6FE6A4B869117E78FB50E03B27E6CEAE6C66CDBFE0BD77F259D2EE13CE65CE1B440FB66F840AE385F9D815DBB8E9C8F6502AB5DA9FCE1B6B5CB3A4869F90800255CCA0314E048ED50026EBDB36E9EB7BA0D4A59DABA053578AFD3AE4066CD48FF8A68FC30684D6C4E8C628E3F73CA85A13BC80FDB9B3E045EAE3A34C6A42AD9415F8786723CC48695518668F9B34143BDC1D9E5BA7E5310A0B2E8618170B296297D1B2AB2ECB011BBC465244679615EA127CAC4A9ED61CAB5E8B314509A3FDAEFF9137D9ED70B26C19462888E5A32B330E5FE296F7450625BD823E1C05803AD57F6593582E50FE94E87852017CB6FB41B74501DA99ABBBA38A2BF47CDF4B3F321FC9F9ADD8A415FF0D4DB882",
-          "reportunitname": ""
-      }
-  ],
-  "totalCount": 1,
-  "totalPage": 1,
-  "serviceBill": null
+//将时间戳格式转换成年月日时分秒
+var date = new Date();
+var Y = date.getFullYear();
+var M = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+var D = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+
+var h = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+var m = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+var s = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+if (date.getMilliseconds() < 10) {
+  var millseconds = "00" + date.getMilliseconds();
+} else if (date.getMilliseconds() < 100) {
+  var millseconds = "0" + date.getMilliseconds();
+} else {
+  var millseconds = date.getMilliseconds();
 }
+var eventId = String(Y) + String(M) + String(D) + String(h) + String(m) + String(s) + String(millseconds);
+var desc = "无";
+if (globalValue.yingJiDescription && globalValue.yingJiDescription.value) {
+  desc = globalValue.yingJiDescription.value;
+}
+
+// console.log("处置流程编码：", globalValue)
+return {
+  body: {
+    //迎接类型
+    riskType: state.form.riskType,
+    //发生地点
+    riskPlace: state.form.riskPlace,
+    //发生地点坐标
+    riskPlaceCoor: state.form.riskPlaceCoor,
+    //发生时间
+    riskTime: Y + "-" + M + "-" + D + " " + h + ":" + m + ":" + s,
+    //预案类型
+    planType: state.form.planType,
+    //事故类型一级
+    accidentTypeFirst: state.form.accidentTypeFirst,
+    //事故类型二级
+    accidentTypeSecond: state.form.accidentTypeSecond,
+    //应急预案
+    riskPlan: state.form.riskPlan,
+    //应急预案id
+    riskPlanId: state.form.riskPlanId.toString(),
+    //应急预案编码
+    riskPlanCode: "",
+    //应急描述
+    riskDes: desc,
+    //应急名称
+    riskName: state.form.riskName,
+    //影响范围半径
+    rangeWeight: state.form.rangeWeight,
+    //影响范围高度
+    rangeHeight: state.form.rangeHeight,
+    //应急id，第一次发起生成的应急事件id，每个升级流程，都与之关联
+    riskId: eventId
+  },
+  headers: {},
+  querys: {
+    taskCode: "c2fbad50-0f5f-47e2-bf62-72c04cac4085"
+  },
+  sourceId: "a7b34b0c-1d2c-41f8-b97b-5ee2dd875352"
+};

@@ -33,12 +33,12 @@
       <el-form label-width="100px" :model="state.form" :rules="state.rules">
         <el-col :span="24">
           <el-form-item label="应急名称：" prop="riskName">
-            <input v-model="state.form.riskname" class="normalinput" type="text" placeholder="地点（设备） + 事件名称" />
+            <input v-model="state.form.riskName" class="normalinput" type="text" placeholder="地点（设备） + 事件名称" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="应急类型：" prop="riskType">
-            <select class="selectLx" v-model="state.form.riskType" placeholder="请选择">
+          <el-form-item label="应急类型：" prop="riskTypeId">
+            <select class="selectLx" v-model="state.form.riskTypeId" placeholder="请选择" @change="changeRiskType">
               <option v-for="item in state.yjlxOptions" :key="item.value" :label="item.label" :value="item.value"></option>
             </select>
           </el-form-item>
@@ -53,11 +53,9 @@
                 </div>
               </el-col>
               <el-col :span="7">
-                <!-- <el-input v-model="state.form.region" placeholder="坐标" /> -->
                 <input v-model="state.form.riskPlaceCoor" class="normalinput" type="text" placeholder="坐标" style="height: 32px" />
               </el-col>
               <el-col :span="8" style="margin-left: 20px">
-                <!-- <el-input v-model="state.form.region" placeholder="地点" /> -->
                 <input v-model="state.form.riskPlace" class="normalinput" type="text" placeholder="地点" style="height: 32px" />
               </el-col>
             </el-form-item>
@@ -88,12 +86,12 @@
             <el-form-item label="事故类型：" prop="accidentTypeFirstId">
               <el-col :span="12">
                 <select class="selectLxsg" v-model="state.form.accidentTypeFirstId" placeholder="请选择" @change="changeAccidentTypeFirst">
-                  <option v-for="item in state.sglxBigOption" :key="item.dictLabel" :label="item.dictLabel" :value="item.dictLabel"></option>
+                  <option v-for="item in state.sglxBigOption" :key="item.dictCode" :label="item.dictLabel" :value="item.dictCode"></option>
                 </select>
               </el-col>
               <el-col :span="12">
-                <select class="selectLxsg" v-model="state.form.accidentTypeSecondId" placeholder="请选择">
-                  <option v-for="item in state.sglxSmallOption" :key="item.dictLabel" :label="item.dictLabel" :value="item.dictLabel"></option>
+                <select class="selectLxsg" v-model="state.form.accidentTypeSecondId" placeholder="请选择" @change="changeAccidentTypeSecond">
+                  <option v-for="item in state.sglxSmallOption" :key="item.dictCode" :label="item.dictLabel" :value="item.dictCode"></option>
                 </select>
               </el-col>
             </el-form-item>
@@ -101,15 +99,15 @@
         </el-row>
         <el-col :span="24">
           <el-form-item label="预案类型：" prop="planTypeId">
-            <select class="selectLx" v-model="state.form.planTypeId" placeholder="请选择">
+            <select class="selectLx" v-model="state.form.planTypeId" placeholder="请选择" @change="changePlanType">
               <option v-for="item in state.yalxOption" :key="item.dictCode" :label="item.dictLabel" :value="item.dictCode"></option>
             </select>
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="预案名称：" prop="riskPlanId">
+          <el-form-item label="预案名称：" prop="riskPlanId" @change="changerRiskPlan">
             <select class="selectLx" v-model="state.form.riskPlanId" placeholder="请选择">
-              <option v-for="item in state.yamcOption" :key="item.tenantid" :label="item.name" :value="item.tenantid"></option>
+              <option v-for="item in state.yamcOption" :key="item.preplaninfoid" :label="item.name" :value="item.preplaninfoid"></option>
             </select>
           </el-form-item>
         </el-col>
@@ -134,6 +132,9 @@ import { reactive, onMounted, ref } from "vue";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 const dialogFormVisible = ref(false);
+const taskCode = ref("c2fbad50-0f5f-47e2-bf62-72c04cac4085");
+const eventId = ref("");
+const riskTime = ref("");
 const state = reactive({
   tableData: [],
   yjlxOptions: [
@@ -213,8 +214,25 @@ const yjqd = () => {
   // 获取预案名称列表
   getYamc();
 };
+const changeRiskType = (event) => {
+  state.yjlxOptions.forEach((item) => {
+    if (item.value == event.target.value) {
+      state.form.riskType = item.label;
+    }
+  });
+};
 const changeAccidentTypeFirst = (event) => {
-  console.log("event.target==", event.target.value);
+  console.log("event.target==", event.target);
+  console.log("event.target.value==", event.target.value);
+  console.log("event.target.label==", event.target.label);
+  state.sglxSmallOption = [];
+  state.form.accidentTypeSecondId = "";
+  state.form.accidentTypeSecond = "";
+  state.sglxBigOption.forEach((item) => {
+    if (item.dictCode == event.target.value) {
+      state.form.accidentTypeFirst = item.dictLabel;
+    }
+  });
   // const data = {
   //   dictName: event.target.value
   // };
@@ -246,6 +264,27 @@ const changeAccidentTypeFirst = (event) => {
     serviceBill: null
   };
   state.sglxSmallOption = JSON.parse(res.list[0].list);
+};
+const changeAccidentTypeSecond = (event) => {
+  state.sglxSmallOption.forEach((item) => {
+    if (item.dictCode == event.target.value) {
+      state.form.accidentTypeSecond = item.dictLabel;
+    }
+  });
+};
+const changePlanType = (event) => {
+  state.yalxOption.forEach((item) => {
+    if (item.dictCode == event.target.value) {
+      state.form.planType = item.dictLabel;
+    }
+  });
+};
+const changerRiskPlan = (event) => {
+  state.yamcOption.forEach((item) => {
+    if (item.preplaninfoid == event.target.value) {
+      state.form.riskPlan = item.name;
+    }
+  });
 };
 const getSglxBig = () => {
   console.log("获取事故类型");
@@ -372,23 +411,24 @@ const getYamc = () => {
   state.yamcOption = res.list;
 };
 const handleChuZhi = async (item) => {
-  console.log("item", item);
-  // const res = await axios({
-  //   method: "get",
-  //   url: `/dataService/workbench/micro/task/detail/${item.riskid}`
-  // });
+  console.log("item==", item.processinstanceid);
   const res = await axios({
     method: "get",
-    url: "/adapterServer/adapter/task/todo/process_instance/?processInstanceId=17985761081856"
+    url: "/adapterServer/adapter/task/todo/process_instance/?processInstanceId=" + item.processinstanceid
   });
-  console.log("res==", res);
+  console.log("res.data.data==", res.data.data);
+  // if (res.data.data) {
+  //   const taskId = res.data.data[0].id;
+  //   const url = "http://10.21.134.39:12841/workbench/micro/task/detail/" + taskId;
+  //   window.open(url);
+  // }
+  window.open("http://10.21.134.39:12841/workbench/micro/task/detail/17985761109122");
 };
 const getTableData = async () => {
   console.log("11");
   console.log("77");
-  // const data = {
-  //   riskId: "20231108085951125" // 20231116114026452
-  // };
+  // getEventId();
+  // const data = {};
   // const res = await axios({
   //   method: "post",
   //   url: `/dataService/oss/search`,
@@ -478,7 +518,7 @@ const getTableData = async () => {
   state.tableData = res.list;
 };
 const validateForm = () => {
-  if (!state.form.riskname) {
+  if (!state.form.riskName) {
     ElMessage.error("请输入应急名称");
     return false;
   } else if (!state.form.riskType) {
@@ -511,26 +551,232 @@ const validateForm = () => {
   }
   return true;
 };
+// 根据当前时间获取eventid
+const getEventId = () => {
+  //将时间戳格式转换成年月日时分秒
+  var date = new Date();
+  var Y = date.getFullYear();
+  var M = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+  var D = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+  var h = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+  var m = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+  var s = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+  let millseconds = "";
+  if (date.getMilliseconds() < 10) {
+    millseconds = "00" + date.getMilliseconds();
+  } else if (date.getMilliseconds() < 100) {
+    millseconds = "0" + date.getMilliseconds();
+  } else {
+    millseconds = date.getMilliseconds();
+  }
+  eventId.value = String(Y) + String(M) + String(D) + String(h) + String(m) + String(s) + String(millseconds);
+  riskTime.value = Y + "-" + M + "-" + D + " " + h + ":" + m + ":" + s;
+};
+const yjsjfqgdFirst = async () => {
+  getEventId();
+  const data = {
+    //迎接类型
+    riskType: state.form.riskType,
+    //发生地点
+    riskPlace: state.form.riskPlace,
+    //发生地点坐标
+    riskPlaceCoor: state.form.riskPlaceCoor,
+    //发生时间
+    riskTime: riskTime.value,
+    //预案类型
+    planType: state.form.planType,
+    //事故类型一级
+    accidentTypeFirst: state.form.accidentTypeFirst,
+    //事故类型二级
+    accidentTypeSecond: state.form.accidentTypeSecond,
+    //应急预案
+    riskPlan: state.form.riskPlan,
+    //应急预案id
+    riskPlanId: state.form.riskPlanId.toString(),
+    //应急预案编码
+    riskPlanCode: "riskPlanCode",
+    //应急描述
+    riskDes: state.form.riskDes || "无",
+    //应急名称
+    riskName: state.form.riskName,
+    //影响范围半径
+    rangeWeight: state.form.rangeWeight,
+    //影响范围高度
+    rangeHeight: state.form.rangeHeight,
+    //应急id，第一次发起生成的应急事件id，每个升级流程，都与之关联
+    riskId: eventId.value
+  };
+  const res = await axios({
+    method: "post",
+    url: "/adapterServer/adapter/start/risk?taskCode=" + taskCode.value,
+    data,
+    headers: {
+      //单个请求设置请求头
+      "Content-Type": "application/json"
+    }
+  });
+  console.log("点击保存-1、应急事件发起工单res==", res.data.data.taskInstanceCode);
+  return res.data.data.taskInstanceCode;
+};
+const cxyjsjlcSecond = async (taskInstanceCode) => {
+  console.log(taskInstanceCode);
+  // const res = await axios({
+  //   method: "get",
+  //   url: "/adapterServer/adapter/query/processInstanceId/?eventId=" + taskInstanceCode
+  // });
+  const res = {
+    data: {
+      data: {
+        riskName: "3",
+        step_result_1_1_2: null,
+        step_result_1_1_1: null,
+        step_executed_2_1_2: false,
+        step_executed_2_1_1: false,
+        step_people_2_2_1: null,
+        step_people_2_2_2: null,
+        step_time_3_1_2: null,
+        step_time_3_1_1: null,
+        riskPlaceCoor: "3",
+        step_time_3_1_3: null,
+        riskPlace: "3",
+        step_result_1_1_3: null,
+        riskPlanCode: "riskPlanCode",
+        step_result_2_1_1: null,
+        step_executed_1_1_2: false,
+        riskProcessInstanceId: "18106540381312",
+        taskCode: null,
+        step_executed_1_1_1: false,
+        step_time_1_1_2: null,
+        step_time_1_1_1: null,
+        step_executed_1_1_3: false,
+        step_time_2_1_2: null,
+        step_time_2_1_1: null,
+        riskPlanId: "19",
+        step_time_1_1_3: null,
+        step_group_2: "预警告知",
+        step_group_1: "信息报告",
+        step_result_2_1_2: null,
+        attach_ment_3_1_1: null,
+        attach_ment_3_1_2: null,
+        operatorIframeUrl:
+          "http://10.21.134.39:28180/publish/548297308526600?eventId=831ff9b564db4c7fb8161fb7cbfa22bd&riskName=3&riskType=应急演练&riskPlace=3&riskTime=2023-12-19 11:24:53.0&planType=专项应急预案&accidentType=&riskPlan=生产安全事故综合应急预案_断电&riskDes=3&riskProcessInstanceId=18106540381312&riskId=20231219112452252&accidentTypeFirst=生产安全事故&accidentTypeSecond=人身伤亡事故&riskPlaceCoor=3&rangeHeight=3&rangeWeight=3&riskPlanCode=riskPlanCode",
+        attach_ment_3_1_3: null,
+        rangeWeight: "3",
+        step_content_2_1_1: "1. 联系中控，空压机 C-1201A、1#罐内泵 P-0201A、2#罐内泵 P-0202A 具备 启动条件。由工艺人员现场启动上述设备。",
+        step_result_3_1_3: null,
+        accidentType: null,
+        step_result_3_1_2: null,
+        step_content_2_1_2: "2. 联系总变内值班人员确认 1#码头变电所 2#进线已送电，检查 1#码头变 电所内电气设备运行正常。",
+        step_result_3_1_1: null,
+        attach_ment_2_1_1: null,
+        accidentTypeFirst: "生产安全事故",
+        isRisk: true,
+        attach_ment_2_1_2: null,
+        step_group_1_1: " ",
+        step_group_3_1: "确认阶段",
+        step_content_1_1_3: "3. 总变值班人员将 6kV 母分应急段隔离开关手车由“运行”位置摇至“试验” 位置;确认应急发电机已启动，6kv 应急段母线运行正常。",
+        step_content_1_1_2:
+          "2. 分别断开 6kV I 段、II 段、应急段各出线  开关并确认确已断开; 将 1#主变由“运行”改为“热备用”;断开 1#主变 35kV 开关母线闸刀; 将 2#主变由“运行”改为“热备用”;断开 2#主变 35kV 开关母线闸",
+        step_people_3_1_3: null,
+        taskName: null,
+        step_content_1_1_1: "1. 检查监控系统报警记录及跳闸开关动作情况，确认 35kV I 段母线和Ⅱ段 母线已失电。",
+        step_people_3_1_1: null,
+        step_people_3_1_2: null,
+        step_executed_2_2_2: false,
+        riskBroadcastTemplate: null,
+        riskTime: "2023-12-19 11:24:53.0",
+        step_people_2_1_1: null,
+        step_executed_2_2_1: false,
+        step_people_2_1_2: null,
+        attach_ment_1_1_3: null,
+        iframeDataUrl: "http://10.21.134.39:28180/publish/548294742507528?riskPlanId=19",
+        riskId: "20231219112452252",
+        step_people_1_1_3: null,
+        step_people_1_1_1: null,
+        step_people_1_1_2: null,
+        riskType: "应急演练",
+        step_time_2_2_2: null,
+        step_time_2_2_1: null,
+        attach_ment_1_1_1: null,
+        attach_ment_1_1_2: null,
+        rangeHeight: "3",
+        step_result_2_2_2: null,
+        step_content_3_1_2: "2. 检查 UPS，直流屏，EPS 运行正常",
+        step_result_2_2_1: null,
+        step_content_3_1_1: "1. 确认 3#码头变电所已送电，检查 3#码头变电所内电气设备运行正常；确认现场应急照明启动。",
+        planType: "专项应急预案",
+        riskPlan: "生产安全事故综合应急预案_断电",
+        step_content_3_1_3: "3. 待 35kV 供电系统恢复正常后，根据电调命令恢复正常运行方式。",
+        step_group_3: "预警响应",
+        accidentTypeSecond: "人身伤亡事故",
+        step_content_2_2_2: "2. 联系总变内值班人员确认海水变电所 2#进线已送电，检查海水变电所内 电气设备运行正常。",
+        step_content_2_2_1: "1. 联系总变内值班人员确认 2#码头变电所 2#进线已送电，检查 2#码头变 284电所内电气设备运行正常。",
+        attach_ment_2_2_1: null,
+        step_executed_3_1_2: false,
+        attach_ment_2_2_2: null,
+        step_executed_3_1_1: false,
+        event_id: "831ff9b564db4c7fb8161fb7cbfa22bd",
+        step_group_2_1: "联系中控",
+        step_executed_3_1_3: false,
+        step_group_2_2: "联系总变",
+        riskDes: "3"
+      },
+      name: "生产安全事故综合应急预案_断电",
+      startTime: 1702956293458,
+      id: "18106540381312",
+      endTime: null,
+      state: 1,
+      user: {
+        loginName: "ioctest",
+        id: "2",
+        avatar: null,
+        userName: "租户管理员"
+      },
+      tasks: null
+    },
+    resultCode: 0,
+    resultMessage: "成功"
+  };
+  console.log("查询应急事件流程实例res==", res);
+  return res.data.id;
+};
+const xryjsjThird = async (processInstanceCode) => {
+  getEventId();
+  state.form.processInstanceId = processInstanceCode;
+  state.form.processCode = taskCode.value;
+  state.form.riskId = eventId.value;
+  const data = state.form;
+  const res = await axios({
+    method: "post",
+    url: "/daasOnline/api/daas-online-main/v1/generate/query/1055",
+    data,
+    headers: {
+      //单个请求设置请求头
+      "Content-Type": "application/json"
+    }
+  });
+  console.log("保存最后一步返回的res=", res.data);
+  return res.data;
+};
 const submit = async () => {
   console.log("state.form===", state.form);
   if (validateForm()) {
     console.log("表单验证通过");
-    // 应急事件发起工单
-    const data = {
-      // riskId:riskIdParam
-      riskId: "20231211101224089"
-    };
-    const res = await axios({
-      method: "post",
-      url: `/dataService/oss/search`,
-      data,
-      headers: {
-        //单个请求设置请求头
-        "Content-Type": "application/json",
-        token: "udvGI5Za0AewuLLV6ZLi21UqN35PwOiyHJ2sE44NtDbnW7o9mw7K8IFpStqnKNWtAmrJiOV5RrJIbir0Cf8j7EfRCFAJuG4GDbv5Ndak4dz9EAS9rQlHjGeTFVy7gdzsf9de7b90745ccf2f"
-      }
-    });
-    console.log("res==", res);
+    // 点击保存-1、应急事件发起工单
+    const taskInstanceCode = await yjsjfqgdFirst();
+    console.log("应急事件发起工单返回taskInstanceCode==", taskInstanceCode);
+    // 点击保存-2、查询应急事件流程实例ID
+    const processInstanceCode = await cxyjsjlcSecond(taskInstanceCode);
+    console.log("查询应急事件流程实例ID==", processInstanceCode);
+    // 点击保存-3、通过智心服务写入应急事件
+    const result = await xryjsjThird(processInstanceCode);
+    console.log("result=", result);
+    if (result.resultMessage == "成功") {
+      ElMessage.success("保存成功");
+      dialogFormVisible.value = false;
+      // 刷新table
+      getTableData();
+    }
   } else {
     console.log("表单验证不通过");
   }
