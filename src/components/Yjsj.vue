@@ -446,7 +446,7 @@ const getTableData = async () => {
     headers: {
       //单个请求设置请求头
       "Content-Type": "application/json",
-      token: "udvGI5Za0AewuLLV6ZLi21UqN35PwOiyHJ2sE44NtDbnW7o9mw7K8IFpStqnKNWtAmrJiOV5RrJIbir0Cf8j7EfRCFAJuG4GDbv5Ndak4dz9EAS9rQlHjGeTFVy7gdzsf9de7b90745ccf2f"
+      token: "5E3z9hyRDT2LW7oO8CVlA17zqg9siYnxAhPxIew5eGws8nbG4tDysgKYk6spsl4uurtxsjxZGBTSKXU2E4Ycot5jvf4SxmFzyLXshVUGU2icfkF3plsNtZoHPh3rMoqe0148915adc5037a6"
     }
   });
   // const res = {
@@ -631,148 +631,152 @@ const yjsjfqgdFirst = async () => {
   return res.data.data.taskInstanceCode;
 };
 const cxyjsjlcSecond = async (taskInstanceCode) => {
-  console.log(taskInstanceCode);
-  const res = await axios({
-    method: "get",
-    url: "/adapterServer/adapter/query/processInstanceId?eventId=" + taskInstanceCode
-  });
-  // const res = {
-  //   data: {
-  //     data: {
-  //       riskName: "3",
-  //       step_result_1_1_2: null,
-  //       step_result_1_1_1: null,
-  //       step_executed_2_1_2: false,
-  //       step_executed_2_1_1: false,
-  //       step_people_2_2_1: null,
-  //       step_people_2_2_2: null,
-  //       step_time_3_1_2: null,
-  //       step_time_3_1_1: null,
-  //       riskPlaceCoor: "3",
-  //       step_time_3_1_3: null,
-  //       riskPlace: "3",
-  //       step_result_1_1_3: null,
-  //       riskPlanCode: "riskPlanCode",
-  //       step_result_2_1_1: null,
-  //       step_executed_1_1_2: false,
-  //       riskProcessInstanceId: "18106540381312",
-  //       taskCode: null,
-  //       step_executed_1_1_1: false,
-  //       step_time_1_1_2: null,
-  //       step_time_1_1_1: null,
-  //       step_executed_1_1_3: false,
-  //       step_time_2_1_2: null,
-  //       step_time_2_1_1: null,
-  //       riskPlanId: "19",
-  //       step_time_1_1_3: null,
-  //       step_group_2: "预警告知",
-  //       step_group_1: "信息报告",
-  //       step_result_2_1_2: null,
-  //       attach_ment_3_1_1: null,
-  //       attach_ment_3_1_2: null,
-  //       operatorIframeUrl:
-  //         "http://10.21.134.39:28180/publish/548297308526600?eventId=831ff9b564db4c7fb8161fb7cbfa22bd&riskName=3&riskType=应急演练&riskPlace=3&riskTime=2023-12-19 11:24:53.0&planType=专项应急预案&accidentType=&riskPlan=生产安全事故综合应急预案_断电&riskDes=3&riskProcessInstanceId=18106540381312&riskId=20231219112452252&accidentTypeFirst=生产安全事故&accidentTypeSecond=人身伤亡事故&riskPlaceCoor=3&rangeHeight=3&rangeWeight=3&riskPlanCode=riskPlanCode",
-  //       attach_ment_3_1_3: null,
-  //       rangeWeight: "3",
-  //       step_content_2_1_1: "1. 联系中控，空压机 C-1201A、1#罐内泵 P-0201A、2#罐内泵 P-0202A 具备 启动条件。由工艺人员现场启动上述设备。",
-  //       step_result_3_1_3: null,
-  //       accidentType: null,
-  //       step_result_3_1_2: null,
-  //       step_content_2_1_2: "2. 联系总变内值班人员确认 1#码头变电所 2#进线已送电，检查 1#码头变 电所内电气设备运行正常。",
-  //       step_result_3_1_1: null,
-  //       attach_ment_2_1_1: null,
-  //       accidentTypeFirst: "生产安全事故",
-  //       isRisk: true,
-  //       attach_ment_2_1_2: null,
-  //       step_group_1_1: " ",
-  //       step_group_3_1: "确认阶段",
-  //       step_content_1_1_3: "3. 总变值班人员将 6kV 母分应急段隔离开关手车由“运行”位置摇至“试验” 位置;确认应急发电机已启动，6kv 应急段母线运行正常。",
-  //       step_content_1_1_2:
-  //         "2. 分别断开 6kV I 段、II 段、应急段各出线  开关并确认确已断开; 将 1#主变由“运行”改为“热备用”;断开 1#主变 35kV 开关母线闸刀; 将 2#主变由“运行”改为“热备用”;断开 2#主变 35kV 开关母线闸",
-  //       step_people_3_1_3: null,
-  //       taskName: null,
-  //       step_content_1_1_1: "1. 检查监控系统报警记录及跳闸开关动作情况，确认 35kV I 段母线和Ⅱ段 母线已失电。",
-  //       step_people_3_1_1: null,
-  //       step_people_3_1_2: null,
-  //       step_executed_2_2_2: false,
-  //       riskBroadcastTemplate: null,
-  //       riskTime: "2023-12-19 11:24:53.0",
-  //       step_people_2_1_1: null,
-  //       step_executed_2_2_1: false,
-  //       step_people_2_1_2: null,
-  //       attach_ment_1_1_3: null,
-  //       iframeDataUrl: "http://10.21.134.39:28180/publish/548294742507528?riskPlanId=19",
-  //       riskId: "20231219112452252",
-  //       step_people_1_1_3: null,
-  //       step_people_1_1_1: null,
-  //       step_people_1_1_2: null,
-  //       riskType: "应急演练",
-  //       step_time_2_2_2: null,
-  //       step_time_2_2_1: null,
-  //       attach_ment_1_1_1: null,
-  //       attach_ment_1_1_2: null,
-  //       rangeHeight: "3",
-  //       step_result_2_2_2: null,
-  //       step_content_3_1_2: "2. 检查 UPS，直流屏，EPS 运行正常",
-  //       step_result_2_2_1: null,
-  //       step_content_3_1_1: "1. 确认 3#码头变电所已送电，检查 3#码头变电所内电气设备运行正常；确认现场应急照明启动。",
-  //       planType: "专项应急预案",
-  //       riskPlan: "生产安全事故综合应急预案_断电",
-  //       step_content_3_1_3: "3. 待 35kV 供电系统恢复正常后，根据电调命令恢复正常运行方式。",
-  //       step_group_3: "预警响应",
-  //       accidentTypeSecond: "人身伤亡事故",
-  //       step_content_2_2_2: "2. 联系总变内值班人员确认海水变电所 2#进线已送电，检查海水变电所内 电气设备运行正常。",
-  //       step_content_2_2_1: "1. 联系总变内值班人员确认 2#码头变电所 2#进线已送电，检查 2#码头变 284电所内电气设备运行正常。",
-  //       attach_ment_2_2_1: null,
-  //       step_executed_3_1_2: false,
-  //       attach_ment_2_2_2: null,
-  //       step_executed_3_1_1: false,
-  //       event_id: "831ff9b564db4c7fb8161fb7cbfa22bd",
-  //       step_group_2_1: "联系中控",
-  //       step_executed_3_1_3: false,
-  //       step_group_2_2: "联系总变",
-  //       riskDes: "3"
-  //     },
-  //     name: "生产安全事故综合应急预案_断电",
-  //     startTime: 1702956293458,
-  //     id: "18106540381312",
-  //     endTime: null,
-  //     state: 1,
-  //     user: {
-  //       loginName: "ioctest",
-  //       id: "2",
-  //       avatar: null,
-  //       userName: "租户管理员"
-  //     },
-  //     tasks: null
-  //   },
-  //   resultCode: 0,
-  //   resultMessage: "成功"
-  // };
-  console.log("查询应急事件流程实例res==", res);
-  return res.data.id;
+  // 这个接口在上个接口通了以后立马执行  后端不返回数据
+  setTimeout(async () => {
+    console.log(taskInstanceCode);
+    const res = await axios({
+      method: "get",
+      url: "/adapterServer/adapter/query/processInstanceId?eventId=" + taskInstanceCode
+      // url: "/adapterServer/adapter/query/processInstanceId?eventId=8944ab8688c14d24b816c7f0e433a528"
+    });
+    // const res = {
+    //   data: {
+    //     data: {
+    //       riskName: "3",
+    //       step_result_1_1_2: null,
+    //       step_result_1_1_1: null,
+    //       step_executed_2_1_2: false,
+    //       step_executed_2_1_1: false,
+    //       step_people_2_2_1: null,
+    //       step_people_2_2_2: null,
+    //       step_time_3_1_2: null,
+    //       step_time_3_1_1: null,
+    //       riskPlaceCoor: "3",
+    //       step_time_3_1_3: null,
+    //       riskPlace: "3",
+    //       step_result_1_1_3: null,
+    //       riskPlanCode: "riskPlanCode",
+    //       step_result_2_1_1: null,
+    //       step_executed_1_1_2: false,
+    //       riskProcessInstanceId: "18106540381312",
+    //       taskCode: null,
+    //       step_executed_1_1_1: false,
+    //       step_time_1_1_2: null,
+    //       step_time_1_1_1: null,
+    //       step_executed_1_1_3: false,
+    //       step_time_2_1_2: null,
+    //       step_time_2_1_1: null,
+    //       riskPlanId: "19",
+    //       step_time_1_1_3: null,
+    //       step_group_2: "预警告知",
+    //       step_group_1: "信息报告",
+    //       step_result_2_1_2: null,
+    //       attach_ment_3_1_1: null,
+    //       attach_ment_3_1_2: null,
+    //       operatorIframeUrl:
+    //         "http://10.21.134.39:28180/publish/548297308526600?eventId=831ff9b564db4c7fb8161fb7cbfa22bd&riskName=3&riskType=应急演练&riskPlace=3&riskTime=2023-12-19 11:24:53.0&planType=专项应急预案&accidentType=&riskPlan=生产安全事故综合应急预案_断电&riskDes=3&riskProcessInstanceId=18106540381312&riskId=20231219112452252&accidentTypeFirst=生产安全事故&accidentTypeSecond=人身伤亡事故&riskPlaceCoor=3&rangeHeight=3&rangeWeight=3&riskPlanCode=riskPlanCode",
+    //       attach_ment_3_1_3: null,
+    //       rangeWeight: "3",
+    //       step_content_2_1_1: "1. 联系中控，空压机 C-1201A、1#罐内泵 P-0201A、2#罐内泵 P-0202A 具备 启动条件。由工艺人员现场启动上述设备。",
+    //       step_result_3_1_3: null,
+    //       accidentType: null,
+    //       step_result_3_1_2: null,
+    //       step_content_2_1_2: "2. 联系总变内值班人员确认 1#码头变电所 2#进线已送电，检查 1#码头变 电所内电气设备运行正常。",
+    //       step_result_3_1_1: null,
+    //       attach_ment_2_1_1: null,
+    //       accidentTypeFirst: "生产安全事故",
+    //       isRisk: true,
+    //       attach_ment_2_1_2: null,
+    //       step_group_1_1: " ",
+    //       step_group_3_1: "确认阶段",
+    //       step_content_1_1_3: "3. 总变值班人员将 6kV 母分应急段隔离开关手车由“运行”位置摇至“试验” 位置;确认应急发电机已启动，6kv 应急段母线运行正常。",
+    //       step_content_1_1_2:
+    //         "2. 分别断开 6kV I 段、II 段、应急段各出线  开关并确认确已断开; 将 1#主变由“运行”改为“热备用”;断开 1#主变 35kV 开关母线闸刀; 将 2#主变由“运行”改为“热备用”;断开 2#主变 35kV 开关母线闸",
+    //       step_people_3_1_3: null,
+    //       taskName: null,
+    //       step_content_1_1_1: "1. 检查监控系统报警记录及跳闸开关动作情况，确认 35kV I 段母线和Ⅱ段 母线已失电。",
+    //       step_people_3_1_1: null,
+    //       step_people_3_1_2: null,
+    //       step_executed_2_2_2: false,
+    //       riskBroadcastTemplate: null,
+    //       riskTime: "2023-12-19 11:24:53.0",
+    //       step_people_2_1_1: null,
+    //       step_executed_2_2_1: false,
+    //       step_people_2_1_2: null,
+    //       attach_ment_1_1_3: null,
+    //       iframeDataUrl: "http://10.21.134.39:28180/publish/548294742507528?riskPlanId=19",
+    //       riskId: "20231219112452252",
+    //       step_people_1_1_3: null,
+    //       step_people_1_1_1: null,
+    //       step_people_1_1_2: null,
+    //       riskType: "应急演练",
+    //       step_time_2_2_2: null,
+    //       step_time_2_2_1: null,
+    //       attach_ment_1_1_1: null,
+    //       attach_ment_1_1_2: null,
+    //       rangeHeight: "3",
+    //       step_result_2_2_2: null,
+    //       step_content_3_1_2: "2. 检查 UPS，直流屏，EPS 运行正常",
+    //       step_result_2_2_1: null,
+    //       step_content_3_1_1: "1. 确认 3#码头变电所已送电，检查 3#码头变电所内电气设备运行正常；确认现场应急照明启动。",
+    //       planType: "专项应急预案",
+    //       riskPlan: "生产安全事故综合应急预案_断电",
+    //       step_content_3_1_3: "3. 待 35kV 供电系统恢复正常后，根据电调命令恢复正常运行方式。",
+    //       step_group_3: "预警响应",
+    //       accidentTypeSecond: "人身伤亡事故",
+    //       step_content_2_2_2: "2. 联系总变内值班人员确认海水变电所 2#进线已送电，检查海水变电所内 电气设备运行正常。",
+    //       step_content_2_2_1: "1. 联系总变内值班人员确认 2#码头变电所 2#进线已送电，检查 2#码头变 284电所内电气设备运行正常。",
+    //       attach_ment_2_2_1: null,
+    //       step_executed_3_1_2: false,
+    //       attach_ment_2_2_2: null,
+    //       step_executed_3_1_1: false,
+    //       event_id: "831ff9b564db4c7fb8161fb7cbfa22bd",
+    //       step_group_2_1: "联系中控",
+    //       step_executed_3_1_3: false,
+    //       step_group_2_2: "联系总变",
+    //       riskDes: "3"
+    //     },
+    //     name: "生产安全事故综合应急预案_断电",
+    //     startTime: 1702956293458,
+    //     id: "18106540381312",
+    //     endTime: null,
+    //     state: 1,
+    //     user: {
+    //       loginName: "ioctest",
+    //       id: "2",
+    //       avatar: null,
+    //       userName: "租户管理员"
+    //     },
+    //     tasks: null
+    //   },
+    //   resultCode: 0,
+    //   resultMessage: "成功"
+    // };
+    console.log("查询应急事件流程实例res==", res);
+    return res.data.id;
+  }, 1500);
 };
-const xryjsjThird = async (processInstanceCode) => {
-  getEventId();
-  console.log(processInstanceCode);
-  state.form.processInstanceId = processInstanceCode;
-  // state.form.processInstanceId = "777";
-  state.form.processCode = taskCode.value;
-  state.form.riskId = eventId.value;
-  state.form.riskTime = riskTime.value;
-  const data = state.form;
-  const res = await axios({
-    method: "post",
-    url: "/daasOnline/api/daas-online-main/v1/generate/query/1055",
-    data,
-    headers: {
-      //单个请求设置请求头
-      "Content-Type": "application/json"
-    }
-  });
-  console.log("保存最后一步返回的res=", res.data);
-  return res.data;
-};
+// const xryjsjThird = async (processInstanceCode) => {
+//   getEventId();
+//   console.log(processInstanceCode);
+//   state.form.processInstanceId = processInstanceCode;
+//   // state.form.processInstanceId = "777";
+//   state.form.processCode = taskCode.value;
+//   state.form.riskId = eventId.value;
+//   state.form.riskTime = riskTime.value;
+//   const data = state.form;
+//   const res = await axios({
+//     method: "post",
+//     url: "/daasOnline/api/daas-online-main/v1/generate/query/1055",
+//     data,
+//     headers: {
+//       //单个请求设置请求头
+//       "Content-Type": "application/json"
+//     }
+//   });
+//   console.log("保存最后一步返回的res=", res.data);
+//   return res.data;
+// };
 const submit = async () => {
   console.log("state.form===", state.form);
   if (validateForm()) {
@@ -784,14 +788,14 @@ const submit = async () => {
     const processInstanceCode = await cxyjsjlcSecond(taskInstanceCode);
     console.log("查询应急事件流程实例ID==", processInstanceCode);
     // 点击保存-3、通过智心服务写入应急事件
-    const result = await xryjsjThird(processInstanceCode);
-    console.log("result=", result);
-    if (result.resultMessage == "成功") {
-      ElMessage.success("保存成功");
-      dialogFormVisible.value = false;
-      // 刷新table
-      getTableData();
-    }
+    // const result = await xryjsjThird(processInstanceCode);
+    // console.log("result=", result);
+    // if (result.resultMessage == "成功") {
+    //   ElMessage.success("保存成功");
+    //   dialogFormVisible.value = false;
+    //   // 刷新table
+    //   getTableData();
+    // }
   } else {
     console.log("表单验证不通过");
   }
