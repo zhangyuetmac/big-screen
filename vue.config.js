@@ -1,6 +1,7 @@
 console.log("走到");
 module.exports = {
   devServer: {
+    host: "10.21.63.8",
     port: 3000,
     proxy: {
       "/dataService": {
