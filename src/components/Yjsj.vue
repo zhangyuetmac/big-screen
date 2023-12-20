@@ -1,19 +1,19 @@
 <template>
-  <el-row>
+  <el-row style="padding: 50px">
     <el-col :span="24" class="buttonWrap">
       <el-button type="primary" @click="yjqd" style="padding: 0 10px">应急启动</el-button>
     </el-col>
     <el-col :span="24">
-      <el-table :data="state.tableData" style="width: 100%; height: 850px" border>
-        <el-table-column prop="riskid" label="应急事件ID" width="180" align="center" />
-        <el-table-column prop="riskname" label="应急名称" width="230" align="center" />
+      <el-table :data="state.tableData" style="width: 100%; height: 750px" border>
+        <el-table-column prop="riskid" label="应急事件ID" width="160" align="center" />
+        <el-table-column prop="riskname" label="应急名称" width="160" align="center" />
         <el-table-column prop="risktime" label="应急时间" align="center" />
         <el-table-column prop="riskplace" label="应急地点" align="center" />
-        <el-table-column prop="riskdes" label="应急事件描述" align="center" width="330" />
+        <el-table-column prop="riskdes" label="应急事件描述" align="center" width="230" />
         <el-table-column prop="riskplan" label="预案名称" align="center" />
         <el-table-column prop="risktype" label="（应急演练、双盲演练、应急事件）" align="center" />
         <el-table-column prop="accidenttypefirst" label="事故类型大类" align="center" />
-        <el-table-column prop="riskstate" label=" 状态（未关闭/已关闭）" align="center">
+        <el-table-column prop="riskstate" label=" 状态（未处置/已处置）" align="center" width="130">
           <template #default="scope">
             <span v-if="scope.row.riskstate == '0'">未处置</span>
             <span v-if="scope.row.riskstate == '1'">已处置</span>
